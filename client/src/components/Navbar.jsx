@@ -8,7 +8,7 @@ var Navbar = props => {
       <div className="nav-wrapper container">
         <Link to="/" class="brand-logo">
           <img src="logo.png" alt="logo" />
-          <x class="right">IMS Request App</x>
+          <x className="right">IMS Request App</x>
         </Link>
         <ul className="right">
           <li>

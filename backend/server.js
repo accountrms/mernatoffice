@@ -126,6 +126,20 @@ app.post("/login", (req, res) => {
   }
 });
 
+app.post("/authenticateUser", (req, res) => {
+  jwt.verify(
+    req.body.data.token,
+    "on!the@underwear#scene$",
+    (err, authData) => {
+      if (err) {
+        return res.json({ status: false });
+      } else {
+        return res.json({ status: true });
+      }
+    }
+  );
+});
+
 app.post("/getposts", verifyToken, (req, res) => {
   jwt.verify(req.token, "on!the@underwear#scene$", (err, authData) => {
     if (err) {
