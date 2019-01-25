@@ -117,7 +117,9 @@ app.post("/login", (req, res) => {
               }
             });
             response.on("error", err => {
-              return res.json({ error: "Invalid credentials" });
+              if (err) {
+                return res.json({ error: "Invalid credentials" });
+              }
             });
           }
         });
@@ -132,9 +134,16 @@ app.post("/authenticateUser", (req, res) => {
     "on!the@underwear#scene$",
     (err, authData) => {
       if (err) {
-        return res.json({ status: false });
+        return res.json({
+          status: false,
+          err
+        });
       } else {
-        return res.json({ status: true });
+        var { data } = authData;
+        return res.json({
+          status: true,
+          data
+        });
       }
     }
   );
