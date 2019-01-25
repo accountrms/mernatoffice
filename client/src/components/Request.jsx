@@ -65,7 +65,7 @@ class Request extends Component {
               name="vendor"
               id="vendor"
             />
-            <span class="helper-text">
+            <span className="helper-text">
               Enter the vendor code here. This will be available in the Purchase
               Order
             </span>
@@ -78,7 +78,7 @@ class Request extends Component {
               name="order"
               id="order"
             />
-            <span class="helper-text">
+            <span className="helper-text">
               Enter the Purchase Order No. starting with 4 or 5. Otherwise enter
               the FA No.
             </span>
@@ -91,7 +91,7 @@ class Request extends Component {
               name="invoice"
               id="invoice"
             />
-            <span class="helper-text">
+            <span className="helper-text">
               Enter the invoice number or bill number of the invoice / bill
               submitted by the vendor
             </span>
@@ -106,7 +106,7 @@ class Request extends Component {
               showYearDropdown
               maxDate={new Date()}
             />
-            <span class="helper-text">Enter the invoice date</span>
+            <span className="helper-text">Enter the invoice date</span>
           </div>
           <div className="input-field">
             <label htmlFor="amount">Invoice Amount</label>
@@ -116,7 +116,9 @@ class Request extends Component {
               name="amount"
               id="amount"
             />
-            <span class="helper-text">Enter the total value of invoice</span>
+            <span className="helper-text">
+              Enter the total value of invoice
+            </span>
           </div>
 
           <button className="btn btn-large" type="submit">

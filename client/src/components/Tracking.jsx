@@ -49,11 +49,11 @@ class Tracking extends Component {
   render() {
     var trackingList = this.state.tracking.map(tracking => {
       return (
-        <div class="row">
-          <div class="col s12 m6">
-            <div class="card">
-              <div class="card-content">
-                <span class="card-title" key={tracking.id}>
+        <div className="row">
+          <div className="col s12 m6">
+            <div className="card">
+              <div className="card-content">
+                <span className="card-title" key={tracking.id}>
                   Generate Tracking Number
                 </span>
                 <p>
@@ -83,7 +83,7 @@ class Tracking extends Component {
                   <b> {tracking.amount}</b>
                 </p>
               </div>
-              <div class="card-action">
+              <div className="card-action">
                 {tracking.processed === 0 ? (
                   <form onSubmit={this.handleSubmit}>
                     <input

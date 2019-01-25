@@ -10,8 +10,33 @@ class Login extends React.Component {
     password: ""
   };
 
+  componentDidMount() {
+    var data = {
+      token: localStorage.getItem("token")
+    };
+    if (typeof data.token !== "undefined") {
+      axios.post("/authenticateUser", { data }).then(res => {
+        console.log(res.data);
+        if (res.data.status) {
+          this.props.onUser(res.data.data);
+          this.relogin();
+        } else {
+          console.log("error");
+        }
+      });
+    } else {
+      console.log("yoyo");
+    }
+  }
+
   login = () => {
     fakeAuth.authenticate(() => {
+      this.setState({ redirectToReferrer: true });
+    });
+  };
+
+  relogin = () => {
+    fakeAuth.reauthenticate(() => {
       this.setState({ redirectToReferrer: true });
     });
   };

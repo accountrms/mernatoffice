@@ -4,16 +4,19 @@ import axios from "axios";
 const fakeAuth = {
   isAuthenticated: false,
   authenticate(cb) {
-    this.isAuthenticated = true;
     var data = {
       token: localStorage.getItem("token")
     };
     axios.post("/authenticateUser", { data }).then(res => {
-      console.log(res.data.status);
       if (res.data.status) {
+        this.isAuthenticated = true;
         cb();
       }
     });
+  },
+  reauthenticate(cb) {
+    this.isAuthenticated = true;
+    cb();
   },
   signout(cb) {
     this.isAuthenticated = false;

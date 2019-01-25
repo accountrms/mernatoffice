@@ -6,13 +6,15 @@ var Navbar = props => {
   return (
     <nav>
       <div className="nav-wrapper container">
-        <Link to="/" class="brand-logo">
+        <Link to="/" className="brand-logo">
           <img src="logo.png" alt="logo" />
-          <x className="right">IMS Request App</x>
+          <span className="right">IMS Request App</span>
         </Link>
         <ul className="right">
           <li>
-            <NavLink to="/">Home</NavLink>
+            <NavLink exact={true} to="/">
+              Home
+            </NavLink>
           </li>
           <li>
             <NavLink to="/ims">Request</NavLink>
@@ -27,9 +29,7 @@ var Navbar = props => {
               >
                 Sign out ({props.data.user})
               </button>
-            ) : (
-              <NavLink to="/login">Login</NavLink>
-            )}
+            ) : null}
           </li>
         </ul>
       </div>
