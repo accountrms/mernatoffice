@@ -29,3 +29,7 @@ nav {
 nav li a.active {
   background-color: brown;
 }
+
+span.warning {
+  padding-left: 20px;
+}

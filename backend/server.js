@@ -36,6 +36,15 @@ function verifyToken(req, res, next) {
   }
 }
 
+//funcion to append zero
+
+function appendZeros(data, requiredLength) {
+  for (var i = data.toString().length; i < requiredLength; i++) {
+    data = "0" + data;
+  }
+  return data;
+}
+
 //
 app.post("/login", (req, res) => {
   var { username, password } = req.body.data;
@@ -81,7 +90,7 @@ app.post("/login", (req, res) => {
 
     ldapClient.bind(params.user, params.password, err => {
       if (err) {
-        res.sendStatus(403);
+        res.json({ success: false });
       } else {
         console.log("Bind Successful!");
         let options = {
@@ -154,11 +163,20 @@ app.post("/getposts", verifyToken, (req, res) => {
     if (err) {
       res.sendStatus(403);
     } else {
-      var { id } = req.body.data;
+      var { id, searchStatus, search } = req.body.data;
       if (authData.data.user === "admin" || authData.data.user === "operator")
-        var SELECT_ALL_QUERY = `SELECT * FROM table1 WHERE 1 ORDER BY table1.processed ASC`;
-      else
-        var SELECT_ALL_QUERY = `SELECT * FROM table1 WHERE user="${id}" ORDER BY table1.processed ASC`;
+        if (searchStatus) {
+          var SELECT_ALL_QUERY = `SELECT * FROM table1 WHERE reqno="${search}" ORDER BY table1.processed ASC`;
+        } else {
+          var SELECT_ALL_QUERY = `SELECT * FROM table1 WHERE 1 ORDER BY table1.processed ASC`;
+        }
+      else {
+        if (searchStatus) {
+          var SELECT_ALL_QUERY = `SELECT * FROM table1 WHERE user="${id}" AND reqno="${search}" ORDER BY table1.processed ASC`;
+        } else {
+          var SELECT_ALL_QUERY = `SELECT * FROM table1 WHERE user="${id}" ORDER BY table1.processed ASC`;
+        }
+      }
       connection.query(SELECT_ALL_QUERY, (err, results) => {
         if (err) {
           res.json({ data: false });
@@ -183,13 +201,35 @@ app.post("/addpost", verifyToken, (req, res) => {
   jwt.verify(req.token, "on!the@underwear#scene$", (err, authData) => {
     if (err) res.sendStatus(403);
     else {
-      var { vendor, order, invoice, date, amount } = req.body.data;
-      var user = authData.data.id;
-      var VALUES = [vendor, order, invoice, date, amount, "absent", 0, user];
-      var INSERT_QUERY = `INSERT INTO table1 (vendor, orderno, invoice, date, amount, tracking, processed,user) VALUES (?)`;
-      connection.query(INSERT_QUERY, [VALUES], err => {
-        if (err) return res.json({ data: false });
-        else return res.json({ data: true });
+      var year = new Date().getFullYear();
+      var month = appendZeros(new Date().getMonth() + 1, 2);
+      var date = appendZeros(new Date().getDate(), 2);
+      var today = year + "" + month + "" + date;
+      var NO_OF_REQUEST_QUERY = `SELECT reqno FROM table1 WHERE reqno LIKE "${today}%"`;
+      connection.query(NO_OF_REQUEST_QUERY, (err, result) => {
+        if (err) throw err;
+        else {
+          newReqNo = appendZeros(result.length + 1, 4);
+          var reqno = today + "" + newReqNo;
+          var { vendor, order, invoice, date, amount } = req.body.data;
+          var user = authData.data.id;
+          var VALUES = [
+            vendor,
+            order,
+            invoice,
+            date,
+            amount,
+            "absent",
+            0,
+            user,
+            reqno
+          ];
+          var INSERT_QUERY = `INSERT INTO table1 (vendor, orderno, invoice, date, amount, tracking, processed,user,reqno) VALUES (?)`;
+          connection.query(INSERT_QUERY, [VALUES], err => {
+            if (err) return res.json({ data: false });
+            else return res.json({ data: true });
+          });
+        }
       });
     }
   });

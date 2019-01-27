@@ -7,16 +7,18 @@ class Login extends React.Component {
   state = {
     redirectToReferrer: false,
     username: "",
-    password: ""
+    password: "",
+    usernameError: "",
+    passwordError: "",
+    error: ""
   };
 
-  componentDidMount() {
+  componentWillMount() {
     var data = {
       token: localStorage.getItem("token")
     };
     if (typeof data.token !== "undefined") {
       axios.post("/authenticateUser", { data }).then(res => {
-        console.log(res.data);
         if (res.data.status) {
           this.props.onUser(res.data.data);
           this.relogin();
@@ -53,15 +55,27 @@ class Login extends React.Component {
       password: this.state.password
     };
     e.preventDefault();
-    axios.post("/login", { data }).then(res => {
-      if (res.data.success) {
-        localStorage.setItem("token", res.data.token);
-        this.props.onUser(res.data.data);
-        this.login();
-      } else {
-        console.log("error");
-      }
-    });
+    if (data.username.replace(/\s+/, "").length < 1) {
+      this.setState({ usernameError: "Please enter username" });
+    } else {
+      this.setState({ usernameError: "", error: "" });
+    }
+    if (data.password.length < 1) {
+      this.setState({ passwordError: "Please enter password" });
+    } else {
+      this.setState({ passwordError: "", error: "" });
+    }
+    if (data.username.length > 0 && data.password.length > 0) {
+      axios.post("/login", { data }).then(res => {
+        if (res.data.success) {
+          localStorage.setItem("token", res.data.token);
+          this.props.onUser(res.data.data);
+          this.login();
+        } else {
+          this.setState({ error: "Invalid Username / password" });
+        }
+      });
+    }
   };
 
   render() {
@@ -80,27 +94,34 @@ class Login extends React.Component {
                   <span className="card-title">
                     Login with your domain credentials
                   </span>
-                  <label htmlFor="username">
-                    Username
+                  <div>
+                    <label htmlFor="username">Username</label>
                     <input
                       onChange={this.handleChange}
                       type="text"
                       name="username"
                       id="username"
                     />
-                  </label>
-                  <label htmlFor="password">
-                    Password
+                    <span className="helper-text red-text">
+                      {this.state.usernameError}
+                    </span>
+                  </div>
+                  <div>
+                    <label htmlFor="password">Password</label>
                     <input
                       onChange={this.handleChange}
                       type="password"
                       name="password"
                       id="password"
                     />
-                  </label>
+                    <span className="helper-text red-text">
+                      {this.state.passwordError}
+                    </span>
+                  </div>
                 </div>
                 <div className="card-action">
                   <button className="btn btn-large">Log in</button>
+                  <span className="red-text warning">{this.state.error}</span>
                 </div>
               </div>
             </form>
