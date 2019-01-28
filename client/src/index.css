@@ -30,6 +30,11 @@ nav li a.active {
   background-color: brown;
 }
 
+nav li span {
+  cursor: pointer;
+  padding: 20px 10px;
+}
+
 span.warning {
   padding-left: 20px;
 }

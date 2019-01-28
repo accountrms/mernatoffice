@@ -5,7 +5,9 @@ import PrivateRoute from "./components/PrivateRoute";
 import Login from "./components/Login";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
-import Request from "./components/Request";
+import NewRequest from "./components/NewRequest";
+import RequestForUpdate from "./components/RequestForUpdate";
+import RequestForDelete from "./components/RequestForDelete";
 import Notfound from "./components/Notfound";
 import Tracking from "./components/Tracking";
 import RequestSuccess from "./components/RequestSuccess";
@@ -30,12 +32,14 @@ class App extends Component {
         <div>
           <Navbar data={this.state} />
           <Switch>
-            <PrivateRoute exact path="/" component={Home} id={this.state.id} />
+            <PrivateRoute exact path="/" component={Home} />
             <Route
               path="/login"
               render={props => <Login {...props} onUser={this.handleUser} />}
             />
-            <PrivateRoute path="/ims" component={Request} />
+            <PrivateRoute path="/ims_new" component={NewRequest} />
+            <PrivateRoute path="/ims_update" component={RequestForUpdate} />
+            <PrivateRoute path="/ims_delete" component={RequestForDelete} />
             <PrivateRoute path="/generate/:ims_id" component={Tracking} />
             <PrivateRoute path="/reqsuccess" component={RequestSuccess} />
             <PrivateRoute path="/gensuccess" component={GenerateSuccess} />

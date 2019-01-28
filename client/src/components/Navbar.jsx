@@ -17,18 +17,23 @@ var Navbar = props => {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/ims">Request</NavLink>
+            <NavLink to="/ims_new">Request:New</NavLink>
+          </li>
+          <li>
+            <NavLink to="/ims_update">Request:Update</NavLink>
+          </li>
+          <li>
+            <NavLink to="/ims_delete">Request:Delete</NavLink>
           </li>
           <li>
             {fakeAuth.isAuthenticated ? (
-              <button
-                className="btn btn-flat white-text"
+              <span
                 onClick={() => {
                   fakeAuth.signout(() => props.history.push("/"));
                 }}
               >
                 Sign out ({props.data.user})
-              </button>
+              </span>
             ) : null}
           </li>
         </ul>

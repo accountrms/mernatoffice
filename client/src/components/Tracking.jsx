@@ -49,13 +49,11 @@ class Tracking extends Component {
   render() {
     var trackingList = this.state.tracking.map(tracking => {
       return (
-        <div className="row">
+        <div className="row" key={tracking.id}>
           <div className="col s12 m6">
             <div className="card">
               <div className="card-content">
-                <span className="card-title" key={tracking.id}>
-                  Generate Tracking Number
-                </span>
+                <span className="card-title">Generate Tracking Number</span>
                 <p>
                   Vendor Number:
                   <b> {tracking.vendor}</b>

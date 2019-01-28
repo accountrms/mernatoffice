@@ -5,18 +5,21 @@ import { Link } from "react-router-dom";
 class Home extends Component {
   state = {
     trackingAll: [],
-    search: ""
+    search: "",
+    searchStatus: "",
+    id: ""
   };
 
   componentDidMount() {
     var data = {
       token: localStorage.getItem("token"),
-      id: this.props.id,
       searchStatus: false
     };
     axios.post("/getposts", { data }).then(response => {
       this.setState({
-        trackingAll: response.data.results
+        trackingAll: response.data.results,
+        searchStatus: false,
+        id: response.data.authData.data.id
       });
     });
   }
@@ -31,13 +34,13 @@ class Home extends Component {
     e.preventDefault();
     var data = {
       token: localStorage.getItem("token"),
-      id: this.props.id,
       search: this.state.search,
       searchStatus: true
     };
     axios.post("getposts", { data }).then(response => {
       this.setState({
-        trackingAll: response.data.results
+        trackingAll: response.data.results,
+        searchStatus: true
       });
     });
   };
@@ -60,7 +63,7 @@ class Home extends Component {
           <td>{tracking.amount}</td>
           <td>
             {tracking.processed === 0 ? (
-              this.props.id === "admin" ? (
+              this.state.id === "admin" ? (
                 <Link to={"/generate/" + tracking.id} className="btn">
                   Add
                 </Link>
@@ -118,6 +121,34 @@ class Home extends Component {
               </thead>
               <tbody>{trackingList}</tbody>
             </table>
+          </React.Fragment>
+        ) : this.state.searchStatus ? (
+          <React.Fragment>
+            <div className="row">
+              <form className="col s12">
+                <div className="input-field col s9">
+                  <label htmlFor="search">
+                    Enter your request number to search and check status
+                  </label>
+                  <input
+                    onChange={this.handleChange}
+                    name="search"
+                    id="search"
+                    type="text"
+                    className="validate"
+                  />
+                </div>
+                <div className="input-field col s3">
+                  <input
+                    onClick={this.handleSubmit}
+                    type="submit"
+                    className="btn"
+                    value="Search"
+                  />
+                </div>
+              </form>
+            </div>
+            <h5>Nothing found! Try again with correct request number </h5>
           </React.Fragment>
         ) : (
           <React.Fragment>

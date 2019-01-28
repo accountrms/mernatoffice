@@ -36,7 +36,7 @@ function verifyToken(req, res, next) {
   }
 }
 
-//funcion to append zero
+//Function to append zero
 
 function appendZeros(data, requiredLength) {
   for (var i = data.toString().length; i < requiredLength; i++) {
@@ -163,7 +163,8 @@ app.post("/getposts", verifyToken, (req, res) => {
     if (err) {
       res.sendStatus(403);
     } else {
-      var { id, searchStatus, search } = req.body.data;
+      var { searchStatus, search } = req.body.data;
+      var id = authData.data.id;
       if (authData.data.user === "admin" || authData.data.user === "operator")
         if (searchStatus) {
           var SELECT_ALL_QUERY = `SELECT * FROM table1 WHERE reqno="${search}" ORDER BY table1.processed ASC`;
@@ -181,7 +182,7 @@ app.post("/getposts", verifyToken, (req, res) => {
         if (err) {
           res.json({ data: false });
         } else {
-          return res.json({ results, authData });
+          return res.json({ results, authData, searchStatus });
         }
       });
     }
