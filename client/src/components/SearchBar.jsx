@@ -13,12 +13,15 @@ const SearchBar = props => {
             name="search"
             id="search"
             type="text"
-            className="validate"
             value={props.search}
           />
         </div>
         <div className="input-field col s3">
-          <input type="submit" className="btn" value="Search" />
+          <input
+            type="submit"
+            className="btn yellow black-text"
+            value="Search"
+          />
         </div>
       </form>
     </div>

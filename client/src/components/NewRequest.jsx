@@ -123,7 +123,10 @@ class Request extends Component {
   render() {
     return (
       <div className="container">
-        <h4>Enter the details below and click submit</h4>
+        <h5>
+          <u>Request: New</u>
+        </h5>
+        <h6>Enter the details below and click submit</h6>
         <form onSubmit={this.handleSubmit}>
           <div className="input-field">
             <label htmlFor="vendor">Vendor Code</label>
@@ -192,7 +195,7 @@ class Request extends Component {
             </span>
           </div>
 
-          <button className="btn btn-large" type="submit">
+          <button className="btn green" type="submit">
             Submit
           </button>
         </form>

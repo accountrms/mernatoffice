@@ -87,6 +87,7 @@ app.post("/login", (req, res) => {
     };
 
     const ldapClient = ldapjs.createClient(ldapOptions);
+    console.log(ldapClient);
 
     ldapClient.bind(params.user, params.password, err => {
       if (err) {
@@ -216,6 +217,7 @@ app.post("/addpost", verifyToken, (req, res) => {
           var user = authData.data.id;
           var VALUES = [
             vendor,
+            "N",
             order,
             invoice,
             date,
@@ -225,7 +227,7 @@ app.post("/addpost", verifyToken, (req, res) => {
             user,
             reqno
           ];
-          var INSERT_QUERY = `INSERT INTO table1 (vendor, orderno, invoice, date, amount, tracking, processed,user,reqno) VALUES (?)`;
+          var INSERT_QUERY = `INSERT INTO table1 (vendor, type, orderno, invoice, date, amount, tracking, processed,user,reqno) VALUES (?)`;
           connection.query(INSERT_QUERY, [VALUES], err => {
             if (err) return res.json({ data: false });
             else return res.json({ data: true });
@@ -242,6 +244,30 @@ app.put("/updatepost", (req, res) => {
   connection.query(UPDATE_QUERY, (err, result) => {
     if (err) return res.json({ data: false });
     else res.send("Updated successfully");
+  });
+});
+
+app.post("/requestfordelete", verifyToken, (req, res) => {
+  var { details, justification } = req.body.data;
+  jwt.verify(req.token, "on!the@underwear#scene$", (err, authData) => {
+    if (err) res.sendStatus(403);
+    else if (authData.data.id === details[0].user) {
+      var { reqno, id } = details[0];
+      var VALUES = [reqno, justification];
+      var UPDATE_QUERY = `UPDATE table1 SET processed = "0", type = "D" WHERE table1.id = ${id}`;
+      var ADD_DELETE_DETAILS = `INSERT INTO deletedetails (reqno, remarks) VALUES (?)`;
+      connection.query(UPDATE_QUERY, (err, result) => {
+        if (err) return res.json({ data: false });
+        else {
+          connection.query(ADD_DELETE_DETAILS, [VALUES], err => {
+            if (err) return res.json({ data: false });
+            else return res.json({ data: true });
+          });
+        }
+      });
+    } else {
+      console.log("pooi");
+    }
   });
 });
 

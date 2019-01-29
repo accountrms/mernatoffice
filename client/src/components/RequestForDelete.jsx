@@ -7,7 +7,8 @@ class RequestForDelete extends Component {
   state = {
     trackingAll: [],
     search: "",
-    searchStatus: ""
+    searchStatus: "",
+    justification: ""
   };
 
   handleChange = e => {
@@ -35,7 +36,25 @@ class RequestForDelete extends Component {
     this.setState({
       trackingAll: [],
       search: "",
-      searchStatus: ""
+      searchStatus: "",
+      error: ""
+    });
+  };
+
+  handleDeleteSubmit = e => {
+    var data = {
+      token: localStorage.getItem("token"),
+      details: this.state.trackingAll,
+      justification: this.state.justification
+    };
+    axios.post("requestfordelete", { data }).then(response => {
+      if (response.data) {
+        console.log("hai");
+      } else {
+        this.setState({
+          error: "Some error occurred, Try again"
+        });
+      }
     });
   };
 
@@ -43,9 +62,9 @@ class RequestForDelete extends Component {
     var trackingList = this.state.trackingAll.map(tracking => {
       return (
         <React.Fragment key={tracking.id}>
-          <h5>
+          <h6>
             You searched for <b>Request No. {tracking.reqno}</b>
-          </h5>
+          </h6>
           <table className="highlight">
             <thead>
               <tr>
@@ -77,20 +96,25 @@ class RequestForDelete extends Component {
           <div className="row">
             <form className="col s12">
               <div className="input-field col s9">
-                <label htmlFor="search">
+                <label htmlFor="justification">
                   Enter the reason for deletion and click Submit
                 </label>
                 <input
                   onChange={this.handleChange}
-                  name="search"
-                  id="search"
+                  name="justification"
+                  id="justification"
                   type="text"
                   className="validate"
                 />
               </div>
               <div className="input-field col s3">
                 <div className="col s6">
-                  <input type="button" className="btn" value="Submit" />
+                  <input
+                    onClick={this.handleDeleteSubmit}
+                    type="button"
+                    className="btn"
+                    value="Submit"
+                  />
                 </div>
                 <div className="col s6">
                   <input
@@ -109,6 +133,9 @@ class RequestForDelete extends Component {
 
     return (
       <div className="container">
+        <h5>
+          <u>Request: Delete</u>
+        </h5>
         {this.state.trackingAll.length === 0 ? (
           <React.Fragment>
             <SearchBar

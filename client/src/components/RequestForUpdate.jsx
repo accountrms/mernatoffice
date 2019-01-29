@@ -7,7 +7,7 @@ class RequestForUpdate extends Component {
   state = {
     trackingAll: [],
     search: "",
-    searchStatus: "",
+    searchStatus: false,
     editVendor: false,
     editOrder: false,
     editInvoice: false,
@@ -40,7 +40,12 @@ class RequestForUpdate extends Component {
     this.setState({
       trackingAll: [],
       search: "",
-      searchStatus: ""
+      searchStatus: "",
+      editVendor: false,
+      editOrder: false,
+      editInvoice: false,
+      editDate: false,
+      editAmount: false
     });
   };
 
@@ -54,11 +59,13 @@ class RequestForUpdate extends Component {
     var trackingList = this.state.trackingAll.map(tracking => {
       return (
         <React.Fragment key={tracking.id}>
-          <h5>
+          <h6>
             You searched for <b>Request No. {tracking.reqno}</b> with{" "}
-            <b>tracking no. {tracking.tracking}</b>
-          </h5>
-          <h6>Update the required fields and submit</h6>
+            <b>Tracking no. {tracking.tracking}</b>
+          </h6>
+          <h6>
+            Update the required fields by clicking edit. Submit once completed
+          </h6>
           <table className="highlight">
             <thead>
               <tr>
@@ -70,36 +77,144 @@ class RequestForUpdate extends Component {
             <tbody>
               <tr>
                 <td>Vendor No.</td>
-                <td>{tracking.vendor}</td>
                 <td>
-                  <input type="text" name="vendor" id="vendor" />
+                  {this.state.editVendor ? (
+                    <input
+                      type="text"
+                      name="editedVendor"
+                      id="editedVendor"
+                      defaultValue={tracking.vendor}
+                    />
+                  ) : (
+                    tracking.vendor
+                  )}
+                </td>
+                <td>
+                  {this.state.editVendor ? (
+                    <input
+                      className="btn"
+                      type="button"
+                      disabled="disabled"
+                      value="Editing"
+                    />
+                  ) : (
+                    <input
+                      onClick={this.handleClickOnEdit}
+                      className="btn"
+                      type="button"
+                      id="editVendor"
+                      value="Edit"
+                    />
+                  )}
                 </td>
               </tr>
               <tr>
                 <td>Order No.</td>
-                <td>{tracking.orderno}</td>
                 <td>
-                  <input type="text" name="order" id="order" />
+                  {this.state.editOrder ? (
+                    <input
+                      type="text"
+                      name="editedOrder"
+                      id="editedOrder"
+                      defaultValue={tracking.orderno}
+                    />
+                  ) : (
+                    tracking.orderno
+                  )}
+                </td>
+                <td>
+                  {this.state.editOrder ? (
+                    <input
+                      className="btn"
+                      type="button"
+                      disabled="disabled"
+                      value="Editing"
+                    />
+                  ) : (
+                    <input
+                      onClick={this.handleClickOnEdit}
+                      className="btn"
+                      type="button"
+                      id="editOrder"
+                      value="Edit"
+                    />
+                  )}
                 </td>
               </tr>
               <tr>
                 <td>Invoice No.</td>
-                <td>{tracking.invoice}</td>
                 <td>
-                  <input type="text" name="invoice" id="invoice" />
+                  {this.state.editInvoice ? (
+                    <input
+                      type="text"
+                      name="editedInvoice"
+                      id="editedInvoice"
+                      defaultValue={tracking.invoice}
+                    />
+                  ) : (
+                    tracking.invoice
+                  )}
+                </td>
+                <td>
+                  {this.state.editInvoice ? (
+                    <input
+                      className="btn"
+                      type="button"
+                      disabled="disabled"
+                      value="Editing"
+                    />
+                  ) : (
+                    <input
+                      onClick={this.handleClickOnEdit}
+                      className="btn"
+                      type="button"
+                      id="editInvoice"
+                      value="Edit"
+                    />
+                  )}
                 </td>
               </tr>
               <tr>
                 <td>Invoice Date</td>
                 <td>
-                  {tracking.date.substr(8, 2) +
+                  {this.state.editDate ? (
+                    <input
+                      type="text"
+                      name="editedDate"
+                      id="editedDate"
+                      defaultValue={
+                        tracking.date.substr(8, 2) +
+                        "/" +
+                        tracking.date.substr(5, 2) +
+                        "/" +
+                        tracking.date.substr(0, 4)
+                      }
+                    />
+                  ) : (
+                    tracking.date.substr(8, 2) +
                     "/" +
                     tracking.date.substr(5, 2) +
                     "/" +
-                    tracking.date.substr(0, 4)}
+                    tracking.date.substr(0, 4)
+                  )}
                 </td>
                 <td>
-                  <input type="text" name="date" id="date" />
+                  {this.state.editDate ? (
+                    <input
+                      className="btn"
+                      type="button"
+                      disabled="disabled"
+                      value="Editing"
+                    />
+                  ) : (
+                    <input
+                      onClick={this.handleClickOnEdit}
+                      className="btn"
+                      type="button"
+                      id="editDate"
+                      value="Edit"
+                    />
+                  )}
                 </td>
               </tr>
               <tr>
@@ -110,14 +225,21 @@ class RequestForUpdate extends Component {
                       type="text"
                       name="editedAmount"
                       id="editedAmount"
-                      value={tracking.amount}
+                      defaultValue={tracking.amount}
                     />
                   ) : (
                     tracking.amount
                   )}
                 </td>
                 <td>
-                  {this.state.editAmount ? null : (
+                  {this.state.editAmount ? (
+                    <input
+                      className="btn"
+                      type="button"
+                      disabled="disabled"
+                      value="Editing"
+                    />
+                  ) : (
                     <input
                       onClick={this.handleClickOnEdit}
                       className="btn"
@@ -133,13 +255,13 @@ class RequestForUpdate extends Component {
           <div className="row">
             <div className="input-field col s12">
               <div className="col s6">
-                <input type="button" className="btn" value="Submit" />
+                <input type="button" className="btn green" value="Submit" />
               </div>
               <div className="col s6">
                 <input
                   onClick={this.handleCancel}
                   type="button"
-                  className="btn"
+                  className="btn red"
                   value="Cancel"
                 />
               </div>
@@ -151,6 +273,9 @@ class RequestForUpdate extends Component {
 
     return (
       <div className="container">
+        <h5>
+          <u>Request: Update</u>
+        </h5>
         {this.state.trackingAll.length === 0 ? (
           <React.Fragment>
             <SearchBar

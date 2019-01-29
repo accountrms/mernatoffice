@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import SearchBar from "./SearchBar";
 
 class Home extends Component {
   state = {
@@ -82,30 +83,10 @@ class Home extends Component {
       <div className="container">
         {this.state.trackingAll.length !== 0 ? (
           <React.Fragment>
-            <div className="row">
-              <form className="col s12">
-                <div className="input-field col s9">
-                  <label htmlFor="search">
-                    Enter your request number to search and check status
-                  </label>
-                  <input
-                    onChange={this.handleChange}
-                    name="search"
-                    id="search"
-                    type="text"
-                    className="validate"
-                  />
-                </div>
-                <div className="input-field col s3">
-                  <input
-                    onClick={this.handleSubmit}
-                    type="submit"
-                    className="btn"
-                    value="Search"
-                  />
-                </div>
-              </form>
-            </div>
+            <SearchBar
+              onSubmit={this.handleSubmit}
+              onChange={this.handleChange}
+            />
 
             <table className="highlight">
               <thead>
@@ -124,30 +105,10 @@ class Home extends Component {
           </React.Fragment>
         ) : this.state.searchStatus ? (
           <React.Fragment>
-            <div className="row">
-              <form className="col s12">
-                <div className="input-field col s9">
-                  <label htmlFor="search">
-                    Enter your request number to search and check status
-                  </label>
-                  <input
-                    onChange={this.handleChange}
-                    name="search"
-                    id="search"
-                    type="text"
-                    className="validate"
-                  />
-                </div>
-                <div className="input-field col s3">
-                  <input
-                    onClick={this.handleSubmit}
-                    type="submit"
-                    className="btn"
-                    value="Search"
-                  />
-                </div>
-              </form>
-            </div>
+            <SearchBar
+              onSubmit={this.handleSubmit}
+              onChange={this.handleChange}
+            />
             <h5>Nothing found! Try again with correct request number </h5>
           </React.Fragment>
         ) : (
