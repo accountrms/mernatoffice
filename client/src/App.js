@@ -6,7 +6,7 @@ import Login from "./components/Login";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import NewRequest from "./components/NewRequest";
-import RequestForUpdate from "./components/RequestForUpdate";
+import RequestForChange from "./components/RequestForChange";
 import RequestForDelete from "./components/RequestForDelete";
 import Notfound from "./components/Notfound";
 import Tracking from "./components/Tracking";
@@ -38,7 +38,7 @@ class App extends Component {
               render={props => <Login {...props} onUser={this.handleUser} />}
             />
             <PrivateRoute path="/ims_new" component={NewRequest} />
-            <PrivateRoute path="/ims_update" component={RequestForUpdate} />
+            <PrivateRoute path="/ims_change" component={RequestForChange} />
             <PrivateRoute path="/ims_delete" component={RequestForDelete} />
             <PrivateRoute path="/generate/:ims_id" component={Tracking} />
             <PrivateRoute path="/reqsuccess" component={RequestSuccess} />

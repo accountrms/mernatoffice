@@ -20,7 +20,7 @@ var Navbar = props => {
             <NavLink to="/ims_new">Request:New</NavLink>
           </li>
           <li>
-            <NavLink to="/ims_update">Request:Update</NavLink>
+            <NavLink to="/ims_change">Request:Change</NavLink>
           </li>
           <li>
             <NavLink to="/ims_delete">Request:Delete</NavLink>
