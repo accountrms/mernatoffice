@@ -12,6 +12,8 @@ import Notfound from "./components/Notfound";
 import Tracking from "./components/Tracking";
 import RequestSuccess from "./components/RequestSuccess";
 import GenerateSuccess from "./components/GenerateSuccess";
+import RequestForChangeSuccess from "./components/RequestForChangeSuccess";
+import RequestForDeleteSuccess from "./components/RequestForDeleteSuccess";
 
 class App extends Component {
   state = {
@@ -43,6 +45,14 @@ class App extends Component {
             <PrivateRoute path="/generate/:ims_id" component={Tracking} />
             <PrivateRoute path="/reqsuccess" component={RequestSuccess} />
             <PrivateRoute path="/gensuccess" component={GenerateSuccess} />
+            <PrivateRoute
+              path="/reqchangesuccess"
+              component={RequestForChangeSuccess}
+            />
+            <PrivateRoute
+              path="/reqdeletesuccess"
+              component={RequestForDeleteSuccess}
+            />
             <Route component={Notfound} />
           </Switch>
         </div>

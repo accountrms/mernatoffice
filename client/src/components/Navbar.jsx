@@ -16,15 +16,20 @@ var Navbar = props => {
               Home
             </NavLink>
           </li>
-          <li>
-            <NavLink to="/ims_new">Request:New</NavLink>
-          </li>
-          <li>
-            <NavLink to="/ims_change">Request:Change</NavLink>
-          </li>
-          <li>
-            <NavLink to="/ims_delete">Request:Delete</NavLink>
-          </li>
+          {props.data.id === "admin" || props.data.id === "operator" ? null : (
+            <React.Fragment>
+              <li>
+                <NavLink to="/ims_new">Request:New</NavLink>
+              </li>
+              <li>
+                <NavLink to="/ims_change">Request:Change</NavLink>
+              </li>
+              <li>
+                <NavLink to="/ims_delete">Request:Delete</NavLink>
+              </li>
+            </React.Fragment>
+          )}
+
           <li>
             {fakeAuth.isAuthenticated ? (
               <span

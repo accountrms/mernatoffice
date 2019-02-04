@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
 
 class RequestForDelete extends Component {
@@ -8,7 +7,8 @@ class RequestForDelete extends Component {
     trackingAll: [],
     search: "",
     searchStatus: "",
-    justification: ""
+    justification: "",
+    searchError: ""
   };
 
   handleChange = e => {
@@ -24,12 +24,28 @@ class RequestForDelete extends Component {
       search: this.state.search,
       searchStatus: true
     };
-    axios.post("getposts", { data }).then(response => {
-      this.setState({
-        trackingAll: response.data.results,
-        searchStatus: true
+    if (this.state.search.length === 12) {
+      axios.post("getposts", { data }).then(res => {
+        if (res.data.results.length !== 0) {
+          this.setState({
+            trackingAll: res.data.results,
+            searchStatus: true
+          });
+        } else if (res.data.msgStatus) {
+          this.setState({
+            searchError: res.data.msg
+          });
+        } else {
+          this.setState({
+            searchError: "Please enter correct request number."
+          });
+        }
       });
-    });
+    } else {
+      this.setState({
+        searchError: "Please enter correct request number."
+      });
+    }
   };
 
   handleCancel = e => {
@@ -48,8 +64,9 @@ class RequestForDelete extends Component {
       justification: this.state.justification
     };
     axios.post("requestfordelete", { data }).then(response => {
-      if (response.data) {
-        console.log("hai");
+      console.log(response.data.data);
+      if (response.data.data) {
+        this.props.history.push("/reqdeletesuccess");
       } else {
         this.setState({
           error: "Some error occurred, Try again"
@@ -61,7 +78,7 @@ class RequestForDelete extends Component {
   render() {
     var trackingList = this.state.trackingAll.map(tracking => {
       return (
-        <React.Fragment key={tracking.id}>
+        <div key={tracking.id}>
           <h6>
             You searched for <b>Request No. {tracking.reqno}</b>
           </h6>
@@ -112,7 +129,7 @@ class RequestForDelete extends Component {
                   <input
                     onClick={this.handleDeleteSubmit}
                     type="button"
-                    className="btn"
+                    className="btn green"
                     value="Submit"
                   />
                 </div>
@@ -120,14 +137,14 @@ class RequestForDelete extends Component {
                   <input
                     onClick={this.handleCancel}
                     type="button"
-                    className="btn"
+                    className="btn red"
                     value="Cancel"
                   />
                 </div>
               </div>
             </form>
           </div>
-        </React.Fragment>
+        </div>
       );
     });
 
@@ -141,17 +158,11 @@ class RequestForDelete extends Component {
             <SearchBar
               onSubmit={this.handleSubmit}
               onChange={this.handleChange}
+              searchError={this.state.searchError}
             />
           </React.Fragment>
-        ) : this.state.searchStatus ? (
-          <React.Fragment>{trackingList}</React.Fragment>
         ) : (
-          <React.Fragment>
-            <h4>No request yet! </h4>
-            <h5>
-              Go to <Link to="/ims">Request</Link> to create new request
-            </h5>
-          </React.Fragment>
+          <React.Fragment>{trackingList}</React.Fragment>
         )}
       </div>
     );

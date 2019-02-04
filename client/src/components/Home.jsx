@@ -8,7 +8,8 @@ class Home extends Component {
     trackingAll: [],
     search: "",
     searchStatus: "",
-    id: ""
+    id: "",
+    searchError: ""
   };
 
   componentDidMount() {
@@ -38,12 +39,28 @@ class Home extends Component {
       search: this.state.search,
       searchStatus: true
     };
-    axios.post("getposts", { data }).then(response => {
-      this.setState({
-        trackingAll: response.data.results,
-        searchStatus: true
+    if (this.state.search.length === 12) {
+      axios.post("getposts", { data }).then(res => {
+        if (res.data.results.length !== 0) {
+          this.setState({
+            trackingAll: res.data.results,
+            searchStatus: true
+          });
+        } else if (res.data.msgStatus) {
+          this.setState({
+            searchError: res.data.msg
+          });
+        } else {
+          this.setState({
+            searchError: "Please enter correct request number."
+          });
+        }
       });
-    });
+    } else {
+      this.setState({
+        searchError: "Please enter correct request number."
+      });
+    }
   };
 
   render() {
@@ -65,7 +82,7 @@ class Home extends Component {
           <td>
             {tracking.processed === 0 ? (
               this.state.id === "admin" ? (
-                <Link to={"/generate/" + tracking.id} className="btn">
+                <Link to={"/generate/" + tracking.reqno} className="btn">
                   Add
                 </Link>
               ) : (
@@ -86,6 +103,7 @@ class Home extends Component {
             <SearchBar
               onSubmit={this.handleSubmit}
               onChange={this.handleChange}
+              searchError={this.state.searchError}
             />
 
             <table className="highlight">

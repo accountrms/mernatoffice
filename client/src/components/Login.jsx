@@ -22,12 +22,10 @@ class Login extends React.Component {
         if (res.data.status) {
           this.props.onUser(res.data.data);
           this.relogin();
-        } else {
-          console.log("error");
         }
       });
     } else {
-      console.log("yoyo");
+      console.log("Token expired!");
     }
   }
 

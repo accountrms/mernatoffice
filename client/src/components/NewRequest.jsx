@@ -106,7 +106,8 @@ class Request extends Component {
       axios
         .post("http://localhost:3000/addpost", { data })
         .then(res => {
-          if (res.data) {
+          console.log(res.data);
+          if (res.data === true) {
             this.props.history.push("/reqsuccess");
           } else {
             this.props.history.push("/");
