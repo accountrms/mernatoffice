@@ -225,15 +225,13 @@ class RequestForChange extends Component {
                 <thead>
                   <tr>
                     <th>Description</th>
-                    <th>Existing Value</th>
-                    <th>New value</th>
+                    <th>Value</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td>Vendor No.</td>
                     <td>
-                      {this.state.editVendor.status ? (
                         <div className="input-field">
                           <input
                             onChange={this.handleChangeOnEdit}
@@ -245,33 +243,11 @@ class RequestForChange extends Component {
                             {this.state.vendorError}
                           </span>
                         </div>
-                      ) : (
-                        tracking.vendor
-                      )}
-                    </td>
-                    <td>
-                      {this.state.editVendor.status ? (
-                        <input
-                          className="btn"
-                          type="button"
-                          disabled="disabled"
-                          value="Editing"
-                        />
-                      ) : (
-                        <input
-                          onClick={this.handleClickOnEdit}
-                          className="btn"
-                          type="button"
-                          id="editVendor"
-                          value="Edit"
-                        />
-                      )}
                     </td>
                   </tr>
                   <tr>
                     <td>Order No.</td>
                     <td>
-                      {this.state.editOrder.status ? (
                         <div className="input-field">
                           <input
                             onChange={this.handleChangeOnEdit}
@@ -283,33 +259,11 @@ class RequestForChange extends Component {
                             {this.state.orderError}
                           </span>
                         </div>
-                      ) : (
-                        tracking.orderno
-                      )}
-                    </td>
-                    <td>
-                      {this.state.editOrder.status ? (
-                        <input
-                          className="btn"
-                          type="button"
-                          disabled="disabled"
-                          value="Editing"
-                        />
-                      ) : (
-                        <input
-                          onClick={this.handleClickOnEdit}
-                          className="btn"
-                          type="button"
-                          id="editOrder"
-                          value="Edit"
-                        />
-                      )}
                     </td>
                   </tr>
                   <tr>
                     <td>Invoice No.</td>
                     <td>
-                      {this.state.editInvoice.status ? (
                         <div className="input-field">
                           <input
                             onChange={this.handleChangeOnEdit}
@@ -321,33 +275,11 @@ class RequestForChange extends Component {
                             {this.state.invoiceError}
                           </span>
                         </div>
-                      ) : (
-                        tracking.invoice
-                      )}
-                    </td>
-                    <td>
-                      {this.state.editInvoice.status ? (
-                        <input
-                          className="btn"
-                          type="button"
-                          disabled="disabled"
-                          value="Editing"
-                        />
-                      ) : (
-                        <input
-                          onClick={this.handleClickOnEdit}
-                          className="btn"
-                          type="button"
-                          id="editInvoice"
-                          value="Edit"
-                        />
-                      )}
                     </td>
                   </tr>
                   <tr>
                     <td>Invoice Date</td>
                     <td>
-                      {this.state.editDate.status ? (
                         <div className="input-field">
                           <DatePicker
                             dateFormat="dd/MM/yyyy"
@@ -363,37 +295,11 @@ class RequestForChange extends Component {
                             {this.state.dateError}
                           </span>
                         </div>
-                      ) : (
-                        tracking.date.substr(8, 2) +
-                        "/" +
-                        tracking.date.substr(5, 2) +
-                        "/" +
-                        tracking.date.substr(0, 4)
-                      )}
-                    </td>
-                    <td>
-                      {this.state.editDate.status ? (
-                        <input
-                          className="btn"
-                          type="button"
-                          disabled="disabled"
-                          value="Editing"
-                        />
-                      ) : (
-                        <input
-                          onClick={this.handleClickOnEdit}
-                          className="btn"
-                          type="button"
-                          id="editDate"
-                          value="Edit"
-                        />
-                      )}
                     </td>
                   </tr>
                   <tr>
                     <td>Invoice Amount</td>
                     <td>
-                      {this.state.editAmount.status ? (
                         <div className="input-field">
                           <input
                             onChange={this.handleChangeOnEdit}
@@ -405,27 +311,6 @@ class RequestForChange extends Component {
                             {this.state.amountError}
                           </span>
                         </div>
-                      ) : (
-                        tracking.amount
-                      )}
-                    </td>
-                    <td>
-                      {this.state.editAmount.status ? (
-                        <input
-                          className="btn"
-                          type="button"
-                          disabled="disabled"
-                          value="Editing"
-                        />
-                      ) : (
-                        <input
-                          onClick={this.handleClickOnEdit}
-                          className="btn"
-                          type="button"
-                          id="editAmount"
-                          value="Edit"
-                        />
-                      )}
                     </td>
                   </tr>
                 </tbody>
@@ -458,7 +343,7 @@ class RequestForChange extends Component {
             <div key={tracking.id}>
               <h6>
                 You searched for <b>Request No. {tracking.reqno}</b> <br />
-                Tracking number: <b>{tracking.tracking}</b>
+                Tracking number is generated which is: <b>{tracking.tracking}</b>
                 <br />
                 Update the required fields by clicking edit. Submit once
                 completed
@@ -467,91 +352,35 @@ class RequestForChange extends Component {
                 <thead>
                   <tr>
                     <th>Description</th>
-                    <th>Existing Value</th>
-                    <th>New value</th>
+                    <th>Value</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td>Vendor No.</td>
                     <td>
-                      {this.state.editVendor.status ? (
-                        <div className="input-field">
-                          <input
-                            onChange={this.handleChangeOnEdit}
-                            type="text"
-                            name="editVendor"
-                            defaultValue={tracking.vendor}
-                          />
-                          <span className="helper-text red-text">
-                            {this.state.vendorError}
-                          </span>
-                        </div>
-                      ) : (
+                      {
                         tracking.vendor
-                      )}
+                      }
                     </td>
                     <td>
-                      {this.state.editVendor.status ? (
-                        <input
-                          className="btn"
-                          type="button"
-                          disabled="disabled"
-                          value="Editing"
-                        />
-                      ) : (
-                        <input
-                          onClick={this.handleClickOnEdit}
-                          className="btn"
-                          type="button"
-                          id="editVendor"
-                          value="Edit"
-                        />
-                      )}
+
                     </td>
                   </tr>
                   <tr>
                     <td>Order No.</td>
                     <td>
-                      {this.state.editOrder.status ? (
-                        <div className="input-field">
-                          <input
-                            onChange={this.handleChangeOnEdit}
-                            type="text"
-                            name="editOrder"
-                            defaultValue={tracking.orderno}
-                          />
-                          <span className="helper-text red-text">
-                            {this.state.orderError}
-                          </span>
-                        </div>
-                      ) : (
+                      {
                         tracking.orderno
-                      )}
+                      }
                     </td>
                     <td>
-                      {this.state.editOrder.status ? (
-                        <input
-                          className="btn"
-                          type="button"
-                          disabled="disabled"
-                          value="Editing"
-                        />
-                      ) : (
-                        <input
-                          onClick={this.handleClickOnEdit}
-                          className="btn"
-                          type="button"
-                          id="editOrder"
-                          value="Edit"
-                        />
-                      )}
+
                     </td>
                   </tr>
                   <tr>
                     <td>Invoice No.</td>
                     <td>
-                      {this.state.editInvoice.status ? (
                         <div className="input-field">
                           <input
                             onChange={this.handleChangeOnEdit}
@@ -563,33 +392,11 @@ class RequestForChange extends Component {
                             {this.state.invoiceError}
                           </span>
                         </div>
-                      ) : (
-                        tracking.invoice
-                      )}
-                    </td>
-                    <td>
-                      {this.state.editInvoice.status ? (
-                        <input
-                          className="btn"
-                          type="button"
-                          disabled="disabled"
-                          value="Editing"
-                        />
-                      ) : (
-                        <input
-                          onClick={this.handleClickOnEdit}
-                          className="btn"
-                          type="button"
-                          id="editInvoice"
-                          value="Edit"
-                        />
-                      )}
                     </td>
                   </tr>
                   <tr>
                     <td>Invoice Date</td>
                     <td>
-                      {this.state.editDate.status ? (
                         <div className="input-field">
                           <DatePicker
                             dateFormat="dd/MM/yyyy"
@@ -605,37 +412,11 @@ class RequestForChange extends Component {
                             {this.state.dateError}
                           </span>
                         </div>
-                      ) : (
-                        tracking.date.substr(8, 2) +
-                        "/" +
-                        tracking.date.substr(5, 2) +
-                        "/" +
-                        tracking.date.substr(0, 4)
-                      )}
-                    </td>
-                    <td>
-                      {this.state.editDate.status ? (
-                        <input
-                          className="btn"
-                          type="button"
-                          disabled="disabled"
-                          value="Editing"
-                        />
-                      ) : (
-                        <input
-                          onClick={this.handleClickOnEdit}
-                          className="btn"
-                          type="button"
-                          id="editDate"
-                          value="Edit"
-                        />
-                      )}
                     </td>
                   </tr>
                   <tr>
                     <td>Invoice Amount</td>
                     <td>
-                      {this.state.editAmount.status ? (
                         <div className="input-field">
                           <input
                             onChange={this.handleChangeOnEdit}
@@ -647,27 +428,6 @@ class RequestForChange extends Component {
                             {this.state.amountError}
                           </span>
                         </div>
-                      ) : (
-                        tracking.amount
-                      )}
-                    </td>
-                    <td>
-                      {this.state.editAmount.status ? (
-                        <input
-                          className="btn"
-                          type="button"
-                          disabled="disabled"
-                          value="Editing"
-                        />
-                      ) : (
-                        <input
-                          onClick={this.handleClickOnEdit}
-                          className="btn"
-                          type="button"
-                          id="editAmount"
-                          value="Edit"
-                        />
-                      )}
                     </td>
                   </tr>
                 </tbody>
